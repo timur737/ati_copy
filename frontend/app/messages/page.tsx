@@ -9,7 +9,7 @@ import { useAuthStore } from '@/store/authStore';
 import { format } from 'date-fns';
 import type { Message } from '@/types';
 
-const WS_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/^http/, 'ws') || 'ws://localhost:8000';
+const WS_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/^http/, 'ws') || 'ws://147.45.107.202:8000';
 
 type OnlineMap = Record<number, boolean>;
 
