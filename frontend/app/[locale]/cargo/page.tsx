@@ -6,9 +6,13 @@ import Link from 'next/link';
 import { Search, MapPin, Weight, Calendar, DollarSign, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cargoService } from '@/services/cargo.service';
 import { format } from 'date-fns';
+import { useTranslations, useLocale } from 'next-intl';
 import type { CargoFilters } from '@/types';
 
 export default function CargoListPage() {
+  const t = useTranslations('Cargo');
+  const locale = useLocale();
+
   const [filters, setFilters] = useState<CargoFilters>({});
   const [searchOrigin, setSearchOrigin] = useState('');
   const [searchDest, setSearchDest] = useState('');
@@ -48,9 +52,9 @@ export default function CargoListPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Cargo Marketplace</h1>
+        <h1 className="text-2xl font-bold text-white">{t('title')}</h1>
         <p className="text-slate-400 mt-1">
-          {data?.total ?? '–'} loads available right now
+          {data?.total ?? '–'} {t('available')}
         </p>
       </div>
 
@@ -60,12 +64,12 @@ export default function CargoListPage() {
           <div className="card sticky top-20">
             <div className="flex items-center gap-2 mb-5">
               <Filter className="w-4 h-4 text-brand-400" />
-              <h2 className="font-semibold text-white">Фильтры</h2>
+              <h2 className="font-semibold text-white">{t('filters')}</h2>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="label-text">Город отправления</label>
+                <label className="label-text">{t('origin')}</label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                   <input value={searchOrigin} onChange={(e) => setSearchOrigin(e.target.value)}
@@ -74,7 +78,7 @@ export default function CargoListPage() {
               </div>
 
               <div>
-                <label className="label-text">Город назначения</label>
+                <label className="label-text">{t('destination')}</label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                   <input value={searchDest} onChange={(e) => setSearchDest(e.target.value)}
@@ -83,7 +87,7 @@ export default function CargoListPage() {
               </div>
 
               <div>
-                <label className="label-text">Диапазон цен (USD)</label>
+                <label className="label-text">{t('priceRange')}</label>
                 <div className="flex gap-2">
                   <input value={priceMin} onChange={(e) => setPriceMin(e.target.value)}
                     type="number" placeholder="Мин" className="input-field text-sm py-2.5 w-full" />
@@ -93,7 +97,7 @@ export default function CargoListPage() {
               </div>
 
               <div>
-                <label className="label-text">Мин. вес (кг)</label>
+                <label className="label-text">{t('minWeight')}</label>
                 <div className="relative">
                   <Weight className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                   <input value={weightMin} onChange={(e) => setWeightMin(e.target.value)}
@@ -102,7 +106,7 @@ export default function CargoListPage() {
               </div>
 
               <div>
-                <label className="label-text">Сортировать по</label>
+                <label className="label-text">{t('sortBy')}</label>
                 <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="input-field text-sm py-2.5">
                   <option value="created_at">Дата публикации</option>
                   <option value="price">Цена</option>
@@ -116,9 +120,9 @@ export default function CargoListPage() {
               </div>
 
               <button onClick={applyFilters} className="btn-primary w-full text-sm py-2.5">
-                <Search className="w-4 h-4 inline mr-1.5" />Применить фильтры
+                <Search className="w-4 h-4 inline mr-1.5" />{t('applyFilters')}
               </button>
-              <button onClick={clearFilters} className="btn-secondary w-full text-sm py-2.5">Очистить</button>
+              <button onClick={clearFilters} className="btn-secondary w-full text-sm py-2.5">{t('clear')}</button>
             </div>
           </div>
         </aside>
@@ -138,7 +142,7 @@ export default function CargoListPage() {
                   </div>
                 )}
                 {data?.items.map((cargo) => (
-                  <Link key={cargo.id} href={`/cargo/${cargo.id}`}
+                  <Link key={cargo.id} href={`/${locale}/cargo/${cargo.id}`}
                     className="card block hover:border-brand-500/50 transition-all duration-200 group animate-slide-up">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="flex-1 min-w-0">

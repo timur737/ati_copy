@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('Index');
+  const locale = useLocale();
+
   return (
     <>
       {/* Hero Section */}
@@ -11,24 +15,24 @@ export default function Home() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
           </span>
-          Платформа №1 для логистики в Евразии
+          {t('heroBadge')}
         </div>
         
         <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          Соединяем <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-indigo-400">Перевозчиков</span> и <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Грузовладельцев</span> в реальном времени
+          {t('heroTitle1')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-indigo-400">{t('heroTitle2')}</span> {t('heroTitle3')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">{t('heroTitle4')}</span> {t('heroTitle5')}
         </h1>
         
         <p className="mt-6 text-lg md:text-xl text-slate-400 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.3s' }}>
-          Самый быстрый способ найти грузы, получить автомобили и развивать ваш логистический бизнес за счет надежных партнеров.
+          {t('heroSubtitle')}
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <Link href="/cargo" className="btn-primary w-full sm:w-auto px-8 py-4 text-base rounded-xl group">
-            Искать грузы 
+          <Link href={`/${locale}/cargo`} className="btn-primary w-full sm:w-auto px-8 py-4 text-base rounded-xl group">
+            {t('searchCargoBtn')} 
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
-          <Link href="/post-cargo" className="btn-secondary w-full sm:w-auto px-8 py-4 text-base rounded-xl">
-            Добавить груз
+          <Link href={`/${locale}/post-cargo`} className="btn-secondary w-full sm:w-auto px-8 py-4 text-base rounded-xl">
+            {t('addCargoBtn')}
           </Link>
         </div>
       </section>
