@@ -16,11 +16,12 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-2 px-2">
+    <div className="flex items-center gap-2 px-1">
       <select
         value={locale}
         onChange={handleLocaleChange}
-        className="bg-surface-muted text-slate-300 border border-slate-700/50 rounded-lg px-2 py-1.5 text-sm outline-none focus:border-brand-500 cursor-pointer hover:bg-surface-card transition-colors"
+        className="input-field !py-1.5 !px-2 text-sm w-auto cursor-pointer"
+        style={{ minWidth: '56px' }}
       >
         <option value="ru">RU</option>
         <option value="ky">KY</option>

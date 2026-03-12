@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { Search, MapPin, Weight, Calendar, DollarSign, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, MapPin, Weight, Calendar, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cargoService } from '@/services/cargo.service';
 import { format } from 'date-fns';
 import { useTranslations, useLocale } from 'next-intl';
@@ -52,8 +52,8 @@ export default function CargoListPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">{t('title')}</h1>
-        <p className="text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{t('title')}</h1>
+        <p style={{ color: 'var(--text-muted)' }} className="mt-1">
           {data?.total ?? '–'} {t('available')}
         </p>
       </div>
@@ -63,26 +63,26 @@ export default function CargoListPage() {
         <aside className="lg:w-72 flex-shrink-0">
           <div className="card sticky top-20">
             <div className="flex items-center gap-2 mb-5">
-              <Filter className="w-4 h-4 text-brand-400" />
-              <h2 className="font-semibold text-white">{t('filters')}</h2>
+              <Filter className="w-4 h-4 text-brand-500" />
+              <h2 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{t('filters')}</h2>
             </div>
 
             <div className="space-y-4">
               <div>
                 <label className="label-text">{t('origin')}</label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-muted)' }} />
                   <input value={searchOrigin} onChange={(e) => setSearchOrigin(e.target.value)}
-                    placeholder="Например, Москва" className="input-field pl-9 text-sm py-2.5" />
+                    className="input-field pl-9 text-sm py-2.5" />
                 </div>
               </div>
 
               <div>
                 <label className="label-text">{t('destination')}</label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-muted)' }} />
                   <input value={searchDest} onChange={(e) => setSearchDest(e.target.value)}
-                    placeholder="Например, Берлин" className="input-field pl-9 text-sm py-2.5" />
+                    className="input-field pl-9 text-sm py-2.5" />
                 </div>
               </div>
 
@@ -90,32 +90,32 @@ export default function CargoListPage() {
                 <label className="label-text">{t('priceRange')}</label>
                 <div className="flex gap-2">
                   <input value={priceMin} onChange={(e) => setPriceMin(e.target.value)}
-                    type="number" placeholder="Мин" className="input-field text-sm py-2.5 w-full" />
+                    type="number" placeholder="Min" className="input-field text-sm py-2.5 w-full" />
                   <input value={priceMax} onChange={(e) => setPriceMax(e.target.value)}
-                    type="number" placeholder="Макс" className="input-field text-sm py-2.5 w-full" />
+                    type="number" placeholder="Max" className="input-field text-sm py-2.5 w-full" />
                 </div>
               </div>
 
               <div>
                 <label className="label-text">{t('minWeight')}</label>
                 <div className="relative">
-                  <Weight className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                  <Weight className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-muted)' }} />
                   <input value={weightMin} onChange={(e) => setWeightMin(e.target.value)}
-                    type="number" placeholder="Например, 500" className="input-field pl-9 text-sm py-2.5" />
+                    type="number" className="input-field pl-9 text-sm py-2.5" />
                 </div>
               </div>
 
               <div>
                 <label className="label-text">{t('sortBy')}</label>
                 <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="input-field text-sm py-2.5">
-                  <option value="created_at">Дата публикации</option>
-                  <option value="price">Цена</option>
-                  <option value="weight">Вес</option>
-                  <option value="loading_date">Дата загрузки</option>
+                  <option value="created_at">{t('sortCreatedAt')}</option>
+                  <option value="price">{t('sortPrice')}</option>
+                  <option value="weight">{t('sortWeight')}</option>
+                  <option value="loading_date">{t('sortLoadingDate')}</option>
                 </select>
                 <select value={order} onChange={(e) => setOrder(e.target.value)} className="input-field text-sm py-2.5 mt-2">
-                  <option value="desc">Сначала новые</option>
-                  <option value="asc">Сначала старые</option>
+                  <option value="desc">{t('orderNewest')}</option>
+                  <option value="asc">{t('orderOldest')}</option>
                 </select>
               </div>
 
@@ -138,7 +138,7 @@ export default function CargoListPage() {
               <div className="space-y-3">
                 {data?.items.length === 0 && (
                   <div className="card text-center py-12">
-                    <p className="text-slate-400">Грузов не найдено. Попробуйте изменить фильтры.</p>
+                    <p style={{ color: 'var(--text-muted)' }}>{t('noResults')}</p>
                   </div>
                 )}
                 {data?.items.map((cargo) => (
@@ -149,8 +149,8 @@ export default function CargoListPage() {
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`badge-${cargo.status}`}>{cargo.status}</span>
                         </div>
-                        <h3 className="font-semibold text-white group-hover:text-brand-300 transition-colors truncate">{cargo.title}</h3>
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-slate-400">
+                        <h3 className="font-semibold group-hover:text-brand-500 transition-colors truncate" style={{ color: 'var(--text-primary)' }}>{cargo.title}</h3>
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm" style={{ color: 'var(--text-muted)' }}>
                           <span className="flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5" />
                             {cargo.origin} → {cargo.destination}
@@ -166,12 +166,11 @@ export default function CargoListPage() {
                       </div>
                       <div className="text-right flex-shrink-0">
                         {cargo.price ? (
-                          <div className="text-xl font-bold text-white">
-                            ${cargo.price}
-                            <span className="text-sm text-slate-400 font-normal"> {cargo.currency}</span>
+                          <div className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                            {cargo.price.toLocaleString()} <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>{cargo.currency}</span>
                           </div>
                         ) : (
-                          <div className="text-sm text-slate-500 italic">Цена по запросу</div>
+                          <div className="text-sm italic" style={{ color: 'var(--text-muted)' }}>{t('priceOnRequest')}</div>
                         )}
                       </div>
                     </div>
@@ -184,12 +183,14 @@ export default function CargoListPage() {
                 <div className="flex items-center justify-center gap-3 mt-8">
                   <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
                     className="btn-secondary flex items-center gap-1 text-sm py-2 px-3 disabled:opacity-40">
-                    <ChevronLeft className="w-4 h-4" /> Prev
+                    <ChevronLeft className="w-4 h-4" /> {t('prevPage')}
                   </button>
-                  <span className="text-slate-400 text-sm">Page {page} of {data.pages}</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                    {page} / {data.pages}
+                  </span>
                   <button onClick={() => setPage(p => Math.min(data.pages, p + 1))} disabled={page === data.pages}
                     className="btn-secondary flex items-center gap-1 text-sm py-2 px-3 disabled:opacity-40">
-                    Next <ChevronRight className="w-4 h-4" />
+                    {t('nextPage')} <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               )}

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -22,10 +23,14 @@ module.exports = {
           950: '#172554',
         },
         surface: {
-          DEFAULT: '#0f172a',
-          card:    '#1e293b',
-          muted:   '#334155',
+          DEFAULT: 'var(--surface)',
+          card:    'var(--surface-card)',
+          muted:   'var(--surface-muted)',
         },
+        'text-primary':   'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-muted':     'var(--text-muted)',
+        'border-color':   'var(--border-color)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

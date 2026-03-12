@@ -4,95 +4,111 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Light theme (default) ─────────────────────────────────── */
 @layer base {
   :root {
+    color-scheme: light;
+    --surface:        #f1f5f9;
+    --surface-card:   #ffffff;
+    --surface-muted:  #e2e8f0;
+    --text-primary:   #0f172a;
+    --text-secondary: #334155;
+    --text-muted:     #64748b;
+    --border-color:   #cbd5e1;
+  }
+
+  /* ─── Dark theme ────────────────────────────────────────────── */
+  .dark {
     color-scheme: dark;
+    --surface:        #0f172a;
+    --surface-card:   #1e293b;
+    --surface-muted:  #334155;
+    --text-primary:   #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted:     #94a3b8;
+    --border-color:   #475569;
   }
 
   body {
-    @apply bg-surface text-slate-100 font-sans antialiased;
+    background-color: var(--surface);
+    color: var(--text-primary);
+    @apply font-sans antialiased;
     min-height: 100vh;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   * {
-    @apply border-slate-700;
+    border-color: var(--border-color);
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-surface;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-slate-600 rounded-full;
-  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track  { background: var(--surface); }
+  ::-webkit-scrollbar-thumb  { background: var(--surface-muted); border-radius: 9999px; }
 
-  input, textarea, select {
-    @apply outline-none;
-  }
+  input, textarea, select { @apply outline-none; }
 }
 
+/* ─── Component layer ────────────────────────────────────────── */
 @layer components {
+
+  /* Card */
   .card {
-    @apply bg-surface-card rounded-2xl border border-slate-700/50 p-6 shadow-xl;
+    background-color: var(--surface-card);
+    border: 1px solid var(--border-color);
+    @apply rounded-2xl p-6 shadow-xl;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
   }
 
+  /* Buttons */
   .btn-primary {
     @apply bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-2.5 rounded-xl
            transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
-           focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-surface;
+           focus:ring-2 focus:ring-brand-400 focus:ring-offset-2;
+    focus-ring-offset-color: var(--surface);
   }
 
   .btn-secondary {
-    @apply bg-surface-muted hover:bg-slate-600 text-slate-200 font-medium px-6 py-2.5 rounded-xl
-           transition-all duration-200 active:scale-95 border border-slate-600;
+    background-color: var(--surface-muted);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    @apply font-medium px-6 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
   }
+  .btn-secondary:hover { opacity: 0.85; }
 
   .btn-ghost {
-    @apply text-slate-400 hover:text-slate-100 hover:bg-surface-card px-4 py-2 rounded-lg
-           transition-all duration-200;
+    color: var(--text-muted);
+    @apply px-4 py-2 rounded-lg transition-all duration-200;
+  }
+  .btn-ghost:hover {
+    background-color: var(--surface-muted);
+    color: var(--text-primary);
   }
 
+  /* Form fields */
   .input-field {
-    @apply w-full bg-surface-card border border-slate-600 rounded-xl px-4 py-3 text-slate-100
-           placeholder-slate-500 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20
-           transition-all duration-200;
+    width: 100%;
+    background-color: var(--surface-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    @apply rounded-xl px-4 py-3 transition-all duration-200;
   }
+  .input-field::placeholder { color: var(--text-muted); }
+  .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
 
   .label-text {
-    @apply block text-sm font-medium text-slate-300 mb-1.5;
+    color: var(--text-secondary);
+    @apply block text-sm font-medium mb-1.5;
   }
 
+  /* Badges */
   .badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
-
-  .badge-open {
-    @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
-  }
-
-  .badge-assigned {
-    @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/30;
-  }
-
-  .badge-completed {
-    @apply badge bg-slate-500/20 text-slate-400 border border-slate-500/30;
-  }
-
-  .badge-cancelled {
-    @apply badge bg-red-500/20 text-red-400 border border-red-500/30;
-  }
-
-  .badge-pending {
-    @apply badge bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
-  }
-
-  .badge-accepted {
-    @apply badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
-  }
-
-  .badge-rejected {
-    @apply badge bg-red-500/20 text-red-400 border border-red-500/30;
-  }
+  .badge-open      { @apply badge bg-emerald-500/20 text-emerald-500 border border-emerald-500/30; }
+  .badge-assigned  { @apply badge bg-blue-500/20   text-blue-500   border border-blue-500/30; }
+  .badge-completed { @apply badge bg-slate-500/20  text-slate-500  border border-slate-500/30; }
+  .badge-cancelled { @apply badge bg-red-500/20    text-red-500    border border-red-500/30; }
+  .badge-pending   { @apply badge bg-yellow-500/20 text-yellow-600 border border-yellow-500/30; }
+  .badge-accepted  { @apply badge bg-emerald-500/20 text-emerald-500 border border-emerald-500/30; }
+  .badge-rejected  { @apply badge bg-red-500/20    text-red-500    border border-red-500/30; }
 }

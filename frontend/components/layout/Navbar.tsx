@@ -7,9 +7,9 @@ import { useAuthStore } from '@/store/authStore';
 import { useUIStore } from '@/store/uiStore';
 import { authService } from '@/services/auth.service';
 import toast from 'react-hot-toast';
-import { clsx } from 'clsx';
 import { useTranslations, useLocale } from 'next-intl';
 import { LanguageSwitcher } from '../ui/LanguageSwitcher';
+import { ThemeSwitcher } from '../ui/ThemeSwitcher';
 
 export function Navbar() {
   const router = useRouter();
@@ -31,20 +31,20 @@ export function Navbar() {
     } finally {
       logout();
       router.push(`/${locale}/login`);
-      toast.success('Вы успешно вышли из системы');
+      toast.success(t('loggedOut'));
     }
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-surface-card/80 backdrop-blur-md border-b border-slate-700/50">
+    <header className="sticky top-0 z-50 backdrop-blur-md border-b" style={{ backgroundColor: 'color-mix(in srgb, var(--surface-card) 85%, transparent)', borderColor: 'var(--border-color)' }}>
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href={`/${locale}`} className="flex items-center gap-2 group">
           <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center group-hover:bg-brand-500 transition-colors">
             <Truck className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-lg text-white tracking-tight">
-            ATI<span className="text-brand-400">.market</span>
+          <span className="font-bold text-lg tracking-tight" style={{ color: 'var(--text-primary)' }}>
+            JUKTO<span className="text-brand-500">.kg</span>
           </span>
         </Link>
 
@@ -55,7 +55,7 @@ export function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-surface-muted text-sm font-medium transition-all"
+                className="btn-ghost flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all"
               >
                 <Icon className="w-4 h-4" />
                 {label}
@@ -64,7 +64,8 @@ export function Navbar() {
         </div>
 
         {/* Actions & Locale */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
+          <ThemeSwitcher />
           <LanguageSwitcher />
 
           {isAuthenticated() ? (
@@ -72,24 +73,25 @@ export function Navbar() {
               <Link href={`/${locale}/post-cargo`} className="btn-primary text-sm py-2">
                 + {t('addCargo')}
               </Link>
-              <Link href={`/${locale}/profile`} className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-100 transition-colors px-2 py-1 rounded-lg hover:bg-surface-muted">
+              <Link href={`/${locale}/profile`} className="btn-ghost flex items-center gap-2 text-sm px-2 py-1 rounded-lg">
                 <User className="w-4 h-4" />
                 <span className="max-w-[120px] truncate">{user?.email}</span>
               </Link>
-              <button onClick={handleLogout} className="btn-ghost text-sm p-2" title={t('logout')}>
+              <button onClick={handleLogout} className="btn-ghost p-2" title={t('logout')}>
                 <LogOut className="w-4 h-4" />
               </button>
             </>
           ) : (
             <>
               <Link href={`/${locale}/login`} className="btn-ghost text-sm">{t('login')}</Link>
-              <Link href={`/${locale}/register`} className="btn-primary text-sm py-2">Регистрация</Link>
+              <Link href={`/${locale}/register`} className="btn-primary text-sm py-2">{t('register')}</Link>
             </>
           )}
         </div>
 
         {/* Mobile menu button */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex items-center gap-1">
+          <ThemeSwitcher />
           <LanguageSwitcher />
           <button className="btn-ghost p-2" onClick={toggleSidebar}>
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -99,24 +101,24 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {sidebarOpen && (
-        <div className="md:hidden border-t border-slate-700/50 bg-surface-card animate-fade-in">
+        <div className="md:hidden border-t animate-fade-in" style={{ backgroundColor: 'var(--surface-card)', borderColor: 'var(--border-color)' }}>
           <div className="px-4 py-4 flex flex-col gap-2">
             {isAuthenticated() ? (
               <>
                 {navLinks.map(({ href, label, icon: Icon }) => (
-                  <Link key={href} href={href} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-surface-muted text-sm font-medium" onClick={toggleSidebar}>
+                  <Link key={href} href={href} className="btn-ghost flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium" onClick={toggleSidebar}>
                     <Icon className="w-4 h-4" /> {label}
                   </Link>
                 ))}
                 <Link href={`/${locale}/post-cargo`} className="btn-primary text-sm text-center mt-2" onClick={toggleSidebar}>+ {t('addCargo')}</Link>
-                <button onClick={handleLogout} className="text-left flex items-center gap-2 px-3 py-2.5 text-red-400 hover:bg-surface-muted rounded-lg text-sm mt-1">
+                <button onClick={handleLogout} className="text-left flex items-center gap-2 px-3 py-2.5 text-red-500 hover:bg-surface-muted rounded-lg text-sm mt-1">
                   <LogOut className="w-4 h-4" /> {t('logout')}
                 </button>
               </>
             ) : (
               <>
                 <Link href={`/${locale}/login`} className="btn-secondary text-center text-sm" onClick={toggleSidebar}>{t('login')}</Link>
-                <Link href={`/${locale}/register`} className="btn-primary text-center text-sm" onClick={toggleSidebar}>Регистрация</Link>
+                <Link href={`/${locale}/register`} className="btn-primary text-center text-sm" onClick={toggleSidebar}>{t('register')}</Link>
               </>
             )}
           </div>
