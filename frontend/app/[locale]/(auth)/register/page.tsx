@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -30,6 +31,7 @@ const roleOptions: { value: UserRole; label: string; desc: string }[] = [
 
 export default function RegisterPage() {
   const router = useRouter();
+  const locale = useLocale();
   const { setTokens, setUser } = useAuthStore();
   const [error, setError] = useState('');
 
@@ -49,7 +51,7 @@ export default function RegisterPage() {
       const me = await authService.getMe();
       setUser(me);
       toast.success('Аккаунт создан! Добро пожаловать в ATI.');
-      router.push('/dashboard');
+      router.push(`/${locale}/dashboard`);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Ошибка регистрации');
     }
@@ -138,7 +140,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-slate-400 mt-6">
             Уже есть аккаунт?{' '}
-            <Link href="/login" className="text-brand-400 hover:text-brand-300 font-medium">Войти</Link>
+            <Link href={`/${locale}/login`} className="text-brand-400 hover:text-brand-300 font-medium">Войти</Link>
           </p>
         </div>
       </div>

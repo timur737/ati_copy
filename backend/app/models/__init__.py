@@ -5,6 +5,7 @@ from .truck import Truck
 from .bid import Bid
 from .message import Message
 from .review import Review
+from .driver import Driver
 
 __all__ = [
     "User",
@@ -14,4 +15,5 @@ __all__ = [
     "Bid",
     "Message",
     "Review",
+    "Driver",
 ]

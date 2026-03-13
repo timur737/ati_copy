@@ -38,3 +38,4 @@ class User(Base):
     reviews_given = relationship("Review", back_populates="reviewer", foreign_keys="Review.reviewer_id")
     reviews_received = relationship("Review", back_populates="reviewee", foreign_keys="Review.reviewee_id")
     company = relationship("Company", back_populates="owner", uselist=False)
+    driver_profile = relationship("Driver", back_populates="user", uselist=False)

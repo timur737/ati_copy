@@ -3,18 +3,21 @@
 import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
-import { User, Phone, Building2, Star, Mail, Shield } from 'lucide-react';
+import { User, Phone, Building2, Star, Mail, Shield, Truck } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const locale = useLocale();
   const { isAuthenticated, setUser } = useAuthStore();
 
   useEffect(() => {
-    if (!isAuthenticated()) router.push('/login');
+    if (!isAuthenticated()) router.push(`/${locale}/login`);
   }, []);
 
   const { data: me, isLoading } = useQuery({ queryKey: ['me'], queryFn: authService.getMe });
@@ -112,6 +115,26 @@ export default function ProfilePage() {
           </div>
         ))}
       </div>
+
+      {/* Driver registration for carriers */}
+      {me.role === 'carrier' && (
+        <div className="card mt-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center">
+                <Truck className="w-5 h-5 text-brand-400" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-white">Профиль водителя</div>
+                <div className="text-xs text-slate-400 mt-0.5">Пройдите верификацию для работы с грузами</div>
+              </div>
+            </div>
+            <Link href={`/${locale}/profile/driver`} className="btn-primary text-sm">
+              Зарегистрировать
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,6 +21,7 @@ type LoginForm = z.infer<typeof schema>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const locale = useLocale();
   const { setTokens, setUser } = useAuthStore();
   const [error, setError] = useState('');
 
@@ -35,7 +37,7 @@ export default function LoginPage() {
       const user = await authService.getMe();
       setUser(user);
       toast.success('Добро пожаловать!');
-      router.push('/dashboard');
+      router.push(`/${locale}/dashboard`);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Ошибка авторизации');
     }
@@ -98,7 +100,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-slate-400 mt-6">
             У вас нет аккаунта?{' '}
-            <Link href="/register" className="text-brand-400 hover:text-brand-300 font-medium">
+            <Link href={`/${locale}/register`} className="text-brand-400 hover:text-brand-300 font-medium">
               Зарегистрироваться бесплатно
             </Link>
           </p>

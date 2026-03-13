@@ -133,3 +133,27 @@ export interface Company {
   owner_id: number;
   created_at: string;
 }
+
+// ─── Driver ───────────────────────────────────────
+export type ModerationStatus = 'pending' | 'approved' | 'rejected';
+
+export interface Driver {
+  id: number;
+  user_id: number;
+  full_name: string;
+  license_number: string;
+  passport_front_url: string;
+  passport_back_url: string;
+  moderation_status: ModerationStatus;
+  rejection_reason?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DriverCreate {
+  full_name: string;
+  license_number: string;
+  passport_front_url: string;
+  passport_back_url: string;
+}
